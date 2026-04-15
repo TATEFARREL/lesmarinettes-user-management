@@ -1,0 +1,1 @@
+# Custom FastAPI HTTP exceptions
