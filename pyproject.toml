@@ -1,0 +1,30 @@
+[project]
+name = "lesmarinettes-user-management"
+version = "0.1.0"
+description = "Core user management and authentication service for Les Marinettes"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "alembic>=1.13.1",
+    "asyncpg>=0.29.0",
+    "bcrypt>=4.1.2",
+    "cryptography>=42.0.5",
+    "fastapi>=0.110.0",
+    "passlib>=1.7.4",
+    "pydantic-settings>=2.2.1",
+    "pydantic[email]>=2.6.4",
+    "pyjwt>=2.8.0",
+    "redis>=5.0.3",
+    "sqlalchemy>=2.0.29",
+    "uvicorn>=0.29.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.uv]
+managed = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["app"]
