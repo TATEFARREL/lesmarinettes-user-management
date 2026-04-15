@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+sqlalchemy
+pydantic
+pydantic-settings
+psycopg2-binary
+passlib
+bcrypt
+pyjwt
+cryptography
+alembic
+redis
