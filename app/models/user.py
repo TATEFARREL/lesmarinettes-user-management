@@ -1,15 +1,14 @@
 import uuid
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Boolean, ForeignKey, String
+# Added SQLEnum to handle the database-level enum mapping securely
+from sqlalchemy import Boolean, ForeignKey, String, Enum as SQLEnum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.models.base import Base, timestamp, timestamp_updated
-from app.domain.users.enums import RoleEnum 
+from app.domain.users.enums import Role, StaffKind
 
-if TYPE_CHECKING:
-    from app.models.group import Group
 
 class User(Base):
     __tablename__ = "users"
@@ -33,23 +32,18 @@ class User(Base):
     phone_number: Mapped[str | None] = mapped_column(
         String(20), unique=True, nullable=True
     )
-    role: Mapped[RoleEnum] = mapped_column(default=RoleEnum.USER, nullable=False)
+    
+    role: Mapped[Role] = mapped_column(
+        SQLEnum(Role, native_enum=False), default=Role.STAFF, nullable=False
+    )
+    
+    staff_kind: Mapped[StaffKind | None] = mapped_column(
+        SQLEnum(StaffKind, native_enum=False), nullable=True
+    )
 
-    # This maps directly to your Cloudflare R2 custom domain!
-    image_s3_path: Mapped[str | None] = mapped_column(String, nullable=True)
+    avatar_url: Mapped[str | None] = mapped_column(String, nullable=True)
     
     is_blocked: Mapped[bool] = mapped_column(Boolean, default=False, nullable=False)
-
-    # Foreign key and relationship to the groups table
-    group_id: Mapped[int | None] = mapped_column(
-        ForeignKey("groups.id", ondelete="SET NULL")
-    )
     
-    # Loading strategy: joined for async scalar relationships
-    group: Mapped["Group"] = relationship(
-        "Group", back_populates="users", lazy="joined"
-    )
-
-    # The custom timestamps we defined in base.py
     created_at: Mapped[timestamp]
     modified_at: Mapped[timestamp_updated]

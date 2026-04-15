@@ -1,7 +1,9 @@
 from enum import Enum
 
-
-class RoleEnum(str, Enum):
-    USER = "USER"
+class Role(str, Enum):
     ADMIN = "ADMIN"
-    MODERATOR = "MODERATOR"
+    STAFF = "STAFF"
+
+class StaffKind(str, Enum):
+    TEACHER = "TEACHER"
+    ACCOUNTANT = "ACCOUNTANT"
